@@ -15,33 +15,43 @@ namespace Hacka.Api.Controllers
 
         private const string UserZabixConfig = "UserZabbix";
         private const string PassZabbix = "PassZabbix";
+        private readonly ICollection<dynamic> _data;
 
-        public ZabbixController(ILogger<ZabbixController> logger, IConfiguration configuration)
+        public ZabbixController(ILogger<ZabbixController> logger, IConfiguration configuration, List<dynamic> data)
         {
             _logger = logger;
             _configuration = configuration;
+            _data = data;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var zabbix = new Zabbix.Zabbix(_configuration.GetValue<string>(UserZabixConfig),
-                _configuration.GetValue<string>(PassZabbix),
-                "https://opti.xpinc.io/zabbix-hml/api_jsonrpc.php");
-            await zabbix.LoginAsync();
-            var response = await zabbix.GetResponseJsonAsync("action.get", new
-            {
-                output = "extend",
-                selectOperations = "extend",
-                selectRecoveryOperations = "extend",
-                selectAcknowledgeOperations = "extend",
-                selectFilter = "extend",
-                filter = new
-                {
-                    eventsource = 0
-                }
-            });
-            return Ok();
+            // var zabbix = new Zabbix.Zabbix(_configuration.GetValue<string>(UserZabixConfig),
+            //     _configuration.GetValue<string>(PassZabbix),
+            //     "https://opti.xpinc.io/zabbix-hml/api_jsonrpc.php");
+            // await zabbix.LoginAsync();
+            //
+            // var response = await zabbix.GetResponseJsonAsync("event.get", new
+            // {
+            //     output = "extend",
+            //     select_acknowledges = "extend",
+            //     limit = 10,
+            //     selectTags = "extend",
+            //     selectSuppressionData = "extend",
+            //     sortfield = new [] {"clock", "eventid"},
+            //     sortorder = "DESC"
+            // });
+            // return Ok(response);
+
+            return Ok(_data);
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] dynamic data)
+        {
+            _data.Add(data);
+            return Ok(data);
         }
     }
 }
