@@ -104,7 +104,7 @@ namespace Hacka.Api.Controllers
                 await _eventZabbixRepository.AddAsync(data);
             }
 
-            if (data.IsAcknowledged)
+            if (data.IsAcknowledged && squad != default)
             {
                 await SendProblemTeams(data, squad);
             }
@@ -135,7 +135,7 @@ namespace Hacka.Api.Controllers
             var squadNameOnTag = GetSquadName(zabbixEvent);
             var squad = await _squadRepository.GetByNameAsync(squadNameOnTag);
 
-            if (zabbixEvent != default)
+            if (zabbixEvent != default && squad != default)
             {
                 await InAnalysisTeams(zabbixEvent, squad);
             }

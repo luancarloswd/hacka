@@ -4,14 +4,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4137427C-0AEC-4188-8A68-B12E073DC02A}"
+	ProjectSection(SolutionItems) = preProject
+		media_type.js = media_type.js
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hacka.Api", "src\Hacka.Api\Hacka.Api.csproj", "{7C773CE6-17EF-47F5-B1AD-AE711FA5E4D5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hacka.Zabbix", "src\Hacka.Zabbix\Hacka.Zabbix.csproj", "{466300A2-185B-42B5-9B03-E25961C9900F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hacka.Domain", "src\Hacka.Domain\Hacka.Domain.csproj", "{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hacka.Domain", "src\Hacka.Domain\Hacka.Domain.csproj", "{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hacka.Infra", "src\Hacka.Infra\Hacka.Infra.csproj", "{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hacka.Infra", "src\Hacka.Infra\Hacka.Infra.csproj", "{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
+using Hacka.Api.BackgroundServices;
 using Hacka.Domain.Abstractions;
 
 namespace Hacka.Api
@@ -39,6 +40,7 @@ namespace Hacka.Api
             services.AddSwaggerGen();
 
             DataSeed.InitializeAsync(services.BuildServiceProvider()).Wait();
+            services.AddHostedService<VerifyAlertsBackgroundService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
