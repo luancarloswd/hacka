@@ -20,10 +20,7 @@ namespace Hacka.Api.Controllers
             _squadRepository = squadRepository;
             _msTeamsRepository = msTeamsRepository;
         }
-
-        [HttpGet]
-        public async Task<IActionResult> Get() => Ok(await _eventZabbixRepository.GetAllAsync());
-
+        
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EventZabbixParams data)
         {
