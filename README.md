@@ -13,6 +13,11 @@ Zabbix Interceptor é um projeto com o intuito de interceptar os alertas do zabbi
 - Microsoft Teams
 - Zabbix
 - JavaScript
+- Azure
+
+## Demo
+
+-[Azure](https://hackaapi20210130155201.azurewebsites.net/swagger/index.html)
 
 ## Licença
 [MIT](https://choosealicense.com/licenses/mit/)

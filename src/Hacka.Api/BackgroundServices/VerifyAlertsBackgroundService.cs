@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Hacka.Domain.Abstractions;
 
 namespace Hacka.Api.BackgroundServices
 {
@@ -11,23 +12,27 @@ namespace Hacka.Api.BackgroundServices
         private readonly ILogger<VerifyAlertsBackgroundService> _logger;
         private Timer _timer;
 
-        public VerifyAlertsBackgroundService(ILogger<VerifyAlertsBackgroundService> logger)
+        private readonly IEventZabbixRepository _zabbixRepository;
+
+        public VerifyAlertsBackgroundService(
+            ILogger<VerifyAlertsBackgroundService> logger,
+            IEventZabbixRepository zabbixRepository)
         {
             _logger = logger;
+            _zabbixRepository = zabbixRepository;
         }
 
         public Task StartAsync(CancellationToken stoppingToken)
         {
-            _timer = new Timer(DoWork, null, TimeSpan.Zero,
+            _timer = new Timer(async state => await VerifyAlerts(state), null, TimeSpan.Zero,
                 TimeSpan.FromMinutes(1));
 
             return Task.CompletedTask;
         }
 
-        private void DoWork(object state)
+        private async Task VerifyAlerts(object state)
         {
-            _logger.LogInformation(
-                "Timed Hosted Service is working. Count: {Count}", count);
+            var events = await _zabbixRepository.GetAllAsync(a => a.InAnalisys == false);
         }
 
         public Task StopAsync(CancellationToken stoppingToken)

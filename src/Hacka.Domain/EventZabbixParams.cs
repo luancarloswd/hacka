@@ -29,6 +29,7 @@
         public string TriggerDescription { get; set; }
         public string TriggerId { get; set; }
         public string ZabbixUrl { get; set; }
+        public bool? InAnalisys { get; set; }
 
         public bool IsAcknowledged => EventUpdateAction == "acknowledged";
     }
