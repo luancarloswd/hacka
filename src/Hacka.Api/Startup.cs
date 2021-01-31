@@ -1,3 +1,4 @@
+using System;
 using Hacka.Domain;
 using Hacka.Infra;
 using Microsoft.AspNetCore.Builder;
@@ -19,6 +20,7 @@ namespace Hacka.Api
             Configuration = configuration;
         }
 
+        private readonly IServiceProvider _serviceProvider;
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -28,12 +30,15 @@ namespace Hacka.Api
             services.AddControllers();
             services.AddSingleton(new List<EventZabbixParams>());
             services.AddScoped<IEventZabbixRepository, EventZabbixRepository>();
+            services.AddScoped<ISquadRepository, SquadRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hacka.Api", Version = "v1" });
             });
             
             services.AddSwaggerGen();
+
+            DataSeed.InitializeAsync(services.BuildServiceProvider()).Wait();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

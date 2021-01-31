@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Hacka.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,11 +12,13 @@ namespace Hacka.Infra
         {}
 
         public DbSet<EventZabbixParams> EventZabbix { get; set; }
+        public DbSet<Squad> Squad { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<EventZabbixParams>(ez => ez.HasKey(e => e.EventId));
             base.OnModelCreating(builder);
+            builder.Entity<EventZabbixParams>(ez => ez.HasKey(e => e.EventId));
+            builder.Entity<Squad>(buildAction: s => s.HasKey(e => e.Id));
         }
     }
 }

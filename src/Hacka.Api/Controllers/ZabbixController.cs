@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,15 +26,17 @@ namespace Hacka.Api.Controllers
         private const string PassZabbix = "PassZabbix";
         private readonly ICollection<EventZabbixParams> _data;
         private readonly IEventZabbixRepository _eventZabbixRepository;
+        private readonly ISquadRepository _squadRepository;
 
         public ZabbixController(ILogger<ZabbixController> logger, IConfiguration configuration, List<EventZabbixParams> data,
-            IEventZabbixRepository  eventZabbixRepository)
+            IEventZabbixRepository  eventZabbixRepository, ISquadRepository squadRepository)
         {
             _logger = logger;
             _configuration = configuration;
             _data = data;
             _httpClient = new HttpClient();
             _eventZabbixRepository = eventZabbixRepository;
+            _squadRepository = squadRepository;
         }
 
         [HttpGet]
@@ -63,6 +66,8 @@ namespace Hacka.Api.Controllers
         public async Task<IActionResult> Post([FromBody] EventZabbixParams data)
         {
             var eventExists = await _eventZabbixRepository.GetByIdAsync(data.EventId);
+            var squadNameOnTag = GetSquadName(data);
+            var squad = await _squadRepository.GetByNameAsync(squadNameOnTag);
             if (eventExists != default)
             {
                 eventExists.AlertMessage = data.AlertMessage;
@@ -101,17 +106,24 @@ namespace Hacka.Api.Controllers
 
             if (data.IsAcknowledged)
             {
-                await SendProblemTeams(data);
+                await SendProblemTeams(data, squad);
             }
 
             return Ok(data);
+        }
+
+        private string GetSquadName(EventZabbixParams data)
+        {
+            var splited = data.EventTags.Split(',');
+            var squadTag =  splited.FirstOrDefault(s => s.Contains("SQUAD"));
+            return squadTag?.Replace("SQUAD:", string.Empty);
         }
 
 
         [HttpPost("sendProblem")]
         public IActionResult PostProblem()
         {
-            SendProblemTeams(new EventZabbixParams());
+            SendProblemTeams(new EventZabbixParams(), new Squad());
 
             return Ok();
         }
@@ -120,10 +132,12 @@ namespace Hacka.Api.Controllers
         public async Task<IActionResult> PostInAnalysisTeams(string eventId)
         {
             var zabbixEvent = await _eventZabbixRepository.GetByIdAsync(eventId);
+            var squadNameOnTag = GetSquadName(zabbixEvent);
+            var squad = await _squadRepository.GetByNameAsync(squadNameOnTag);
 
             if (zabbixEvent != default)
             {
-                await InAnalysisTeams(zabbixEvent);
+                await InAnalysisTeams(zabbixEvent, squad);
             }
 
             return Ok();
@@ -137,7 +151,7 @@ namespace Hacka.Api.Controllers
             return Ok();
         }
 
-        private async Task SendProblemTeams(EventZabbixParams eventZabbix)
+        private async Task SendProblemTeams(EventZabbixParams eventZabbix, Squad squad)
         {
             var json = $@"{{
                 '@type': 'MessageCard',
@@ -196,7 +210,7 @@ namespace Hacka.Api.Controllers
                   ]
                 }}]}}".Replace("'", "\"");
 
-            await _httpClient.PostAsync("https://xpcorretora.webhook.office.com/webhookb2/9e74fc8a-77ec-4c42-9c8c-2590bcf0492f@cf56e405-d2b0-4266-b210-aa04636b6161/IncomingWebhook/67721fccac1743c49ca54452f68d33b0/d9be2d45-f7de-458f-9fa7-f346a435d072", new StringContent(json, Encoding.UTF8, "application/json"));
+            await _httpClient.PostAsync(squad.ChannelTeams, new StringContent(json, Encoding.UTF8, "application/json"));
 
         }
 
@@ -206,7 +220,7 @@ namespace Hacka.Api.Controllers
                 : eventZabbix.ZabbixUrl;
 
 
-        private async Task InAnalysisTeams(EventZabbixParams eventZabbix)
+        private async Task InAnalysisTeams(EventZabbixParams eventZabbix, Squad squad)
         {
             var json = $@"{{
                 '@type': 'MessageCard',
@@ -240,7 +254,7 @@ namespace Hacka.Api.Controllers
                 }}]
             }}".Replace("'", "\"");
 
-            await _httpClient.PostAsync("https://xpcorretora.webhook.office.com/webhookb2/9e74fc8a-77ec-4c42-9c8c-2590bcf0492f@cf56e405-d2b0-4266-b210-aa04636b6161/IncomingWebhook/67721fccac1743c49ca54452f68d33b0/d9be2d45-f7de-458f-9fa7-f346a435d072", new StringContent(json, Encoding.UTF8, "application/json"));
+            await _httpClient.PostAsync(squad.ChannelTeams, new StringContent(json, Encoding.UTF8, "application/json"));
 
         }
 
