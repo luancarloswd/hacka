@@ -1,10 +1,12 @@
 # Zabbix Interceptor
 
-Zabbix Interceptor é um projeto com o intuito de interceptar os alertas do zabbix e executar ações customizadas.
+![Build and deploy ASP.Net Core app to Azure Web App - hackaapi20210130155201](https://github.com/luancarloswd/hacka/workflows/Build%20and%20deploy%20ASP.Net%20Core%20app%20to%20Azure%20Web%20App%20-%20hackaapi20210130155201/badge.svg)
 
-## Ações
+Zabbix Interceptor Ã© um projeto com o intuito de interceptar os alertas do zabbix e executar aÃ§Ãµes customizadas.
 
-- Publicação de alertas em canais de comunicação no [Microsoft Teams](https://www.microsoft.com/en/microsoft-teams/free) por alerta.
+## AÃ§Ãµes
+
+- PublicaÃ§Ã£o de alertas em canais de comunicaÃ§Ã£o no [Microsoft Teams](https://www.microsoft.com/en/microsoft-teams/free) por alerta.
 
 ## Tecnologias
 
@@ -19,5 +21,5 @@ Zabbix Interceptor é um projeto com o intuito de interceptar os alertas do zabbi
 
 -[Azure](https://hackaapi20210130155201.azurewebsites.net/swagger/index.html)
 
-## Licença
+## LicenÃ§a
 [MIT](https://choosealicense.com/licenses/mit/)
