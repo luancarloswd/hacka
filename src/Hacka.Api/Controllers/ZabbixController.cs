@@ -116,10 +116,15 @@ namespace Hacka.Api.Controllers
             return Ok();
         }
 
-        [HttpPost("inAnalysis")]
-        public IActionResult PostInAnalysisTeams([FromBody] EventTeamsParams param)
+        [HttpPost("inAnalysis/{eventId}")]
+        public async Task<IActionResult> PostInAnalysisTeams(string eventId)
         {
-            InAnalysisTeams(param.problemName, param.host, param.severity);
+            var zabbixEvent = await _eventZabbixRepository.GetByIdAsync(eventId);
+
+            if (zabbixEvent != default)
+            {
+                await InAnalysisTeams(zabbixEvent);
+            }
 
             return Ok();
         }
@@ -176,19 +181,18 @@ namespace Hacka.Api.Controllers
                     'actions': [{{
                         '@type': 'HttpPOST',
                         'name': 'Save',
-                        'target': '{TEAMS_HOOK_URL}',
+                        'target': '{TEAMS_HOOK_URL}/{eventZabbix.EventId}',
                         'headers': [{{
                             'name': 'content-type',
                             'value': 'application/json'
-                        }}],
-                        'body': '{{\'value\':0,\'problemName\':\'{eventZabbix.AlertSubject}\',\'host\':\'{eventZabbix.HostName}\',\'severity\':\'{eventZabbix.EventSeverity}\'}}'
+                        }}]
                     }}]
                 }}, 
                 {{
                             '@type': 'OpenUri',
                   'name': 'Vizualizar alerta',
                   'targets': [
-                    {{ 'os': 'default', 'uri': 'https://docs.microsoft.com/outlook/actionable-messages' }}
+                    {{ 'os': 'default', 'uri': '{GetUrl(eventZabbix)}' }}
                   ]
                 }}]}}".Replace("'", "\"");
 
@@ -196,8 +200,13 @@ namespace Hacka.Api.Controllers
 
         }
 
+        private string GetUrl(EventZabbixParams eventZabbix) =>
+            eventZabbix.EventSource == "0"
+                ? $"{eventZabbix.ZabbixUrl}/tr_events.php?triggerid={eventZabbix.TriggerId}&eventid={eventZabbix.EventId}"
+                : eventZabbix.ZabbixUrl;
 
-        private async void InAnalysisTeams(string problemName, string host, string severity)
+
+        private async Task InAnalysisTeams(EventZabbixParams eventZabbix)
         {
             var json = $@"{{
                 '@type': 'MessageCard',
@@ -211,13 +220,13 @@ namespace Hacka.Api.Controllers
                         'value': '10:51:58 on 2021.01.30'
                     }}, {{
                         'name': 'Problem name:',
-                        'value': '{problemName}'
+                        'value': '{eventZabbix.AlertSubject}'
                     }}, {{
                         'name': 'Host:',
-                        'value': '{host}'
+                        'value': '{eventZabbix.HostName}'
                     }}, {{
                         'name': 'Severity:',
-                        'value': '{severity}'
+                        'value': '{eventZabbix.EventSeverity}'
                     }}],
                     'markdown': true
                 }}],
@@ -226,7 +235,7 @@ namespace Hacka.Api.Controllers
                   '@type': 'OpenUri',
                   'name': 'Vizualizar alerta',
                   'targets': [
-                    {{ 'os': 'default', 'uri': 'https://docs.microsoft.com/outlook/actionable-messages' }}
+                    {{ 'os': 'default', 'uri': '{GetUrl(eventZabbix)}' }}
                   ]
                 }}]
             }}".Replace("'", "\"");
