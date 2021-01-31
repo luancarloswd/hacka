@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Flurl.Http;
 using Hacka.Domain;
+using Hacka.Domain.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -23,13 +24,16 @@ namespace Hacka.Api.Controllers
         private const string UserZabixConfig = "UserZabbix";
         private const string PassZabbix = "PassZabbix";
         private readonly ICollection<EventZabbixParams> _data;
+        private readonly IEventZabbixRepository _eventZabbixRepository;
 
-        public ZabbixController(ILogger<ZabbixController> logger, IConfiguration configuration, List<EventZabbixParams> data)
+        public ZabbixController(ILogger<ZabbixController> logger, IConfiguration configuration, List<EventZabbixParams> data,
+            IEventZabbixRepository  eventZabbixRepository)
         {
             _logger = logger;
             _configuration = configuration;
             _data = data;
             _httpClient = new HttpClient();
+            _eventZabbixRepository = eventZabbixRepository;
         }
 
         [HttpGet]
@@ -52,13 +56,49 @@ namespace Hacka.Api.Controllers
             // });
             // return Ok(response);
 
-            return Ok(_data);
+            return Ok(await _eventZabbixRepository.GetAllAsync());
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EventZabbixParams data)
         {
-            _data.Add(data);
+            var eventExists = await _eventZabbixRepository.GetByIdAsync(data.EventId);
+            if (eventExists != default)
+            {
+                eventExists.AlertMessage = data.AlertMessage;
+                eventExists.AlertSubject = data.AlertSubject;
+                eventExists.EventDate = data.EventDate;
+                eventExists.EventId = data.EventId;
+                eventExists.EventNseverity = data.EventNseverity;
+                eventExists.EventOpdata = data.EventOpdata;
+                eventExists.EventRecoveryDate = data.EventRecoveryDate;
+                eventExists.EventRecoveryTime = data.EventRecoveryTime;
+                eventExists.EventSeverity = data.EventSeverity;
+                eventExists.EventSource = data.EventSource;
+                eventExists.EventStatus = data.EventStatus;
+                eventExists.EventTags = data.EventTags;
+                eventExists.EventTime = data.EventTime;
+                eventExists.EventUpdateAction = data.EventUpdateAction;
+                eventExists.EventUpdateDate = data.EventUpdateDate;
+                eventExists.Endpoint = data.Endpoint;
+                eventExists.EventUpdateMessage = data.EventUpdateMessage;
+                eventExists.EventUpdateStatus = data.EventUpdateStatus;
+                eventExists.EventUpdateTime = data.EventUpdateTime;
+                eventExists.EventUpdateUser = data.EventUpdateUser;
+                eventExists.EventValue = data.EventValue;
+                eventExists.HostIp = data.HostIp;
+                eventExists.HostName = data.HostName;
+                eventExists.ItemId = data.ItemId;
+                eventExists.TriggerDescription = data.TriggerDescription;
+                eventExists.TriggerId = data.TriggerId;
+                eventExists.ZabbixUrl = data.ZabbixUrl;
+                await _eventZabbixRepository.UpdateAsync(eventExists);
+            }
+            else
+            {
+                await _eventZabbixRepository.AddAsync(data);
+            }
+
             if (data.IsAcknowledged)
             {
                 await SendProblemTeams(data);
@@ -141,7 +181,7 @@ namespace Hacka.Api.Controllers
                             'name': 'content-type',
                             'value': 'application/json'
                         }}],
-                        'body': '{{\'value\':0,\'problemName\':\'{problemName}\',\'host\':\'{host}\',\'severity\':\'{severity}\'}}'
+                        'body': '{{\'value\':0,\'problemName\':\'{eventZabbix.AlertSubject}\',\'host\':\'{eventZabbix.HostName}\',\'severity\':\'{eventZabbix.EventSeverity}\'}}'
                     }}]
                 }}, 
                 {{

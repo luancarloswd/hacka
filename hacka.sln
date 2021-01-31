@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hacka.Zabbix", "src\Hacka.Z
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hacka.Domain", "src\Hacka.Domain\Hacka.Domain.csproj", "{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hacka.Infra", "src\Hacka.Infra\Hacka.Infra.csproj", "{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,18 @@ Global
 		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Release|x64.Build.0 = Release|Any CPU
 		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Release|x86.ActiveCfg = Release|Any CPU
 		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Release|x86.Build.0 = Release|Any CPU
+		{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}.Debug|x64.Build.0 = Debug|Any CPU
+		{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}.Debug|x86.Build.0 = Debug|Any CPU
+		{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}.Release|x64.ActiveCfg = Release|Any CPU
+		{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}.Release|x64.Build.0 = Release|Any CPU
+		{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}.Release|x86.ActiveCfg = Release|Any CPU
+		{D90877A3-BC01-41AE-80BA-2BE4A184DDDD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +79,7 @@ Global
 		{7C773CE6-17EF-47F5-B1AD-AE711FA5E4D5} = {4137427C-0AEC-4188-8A68-B12E073DC02A}
 		{466300A2-185B-42B5-9B03-E25961C9900F} = {4137427C-0AEC-4188-8A68-B12E073DC02A}
 		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9} = {4137427C-0AEC-4188-8A68-B12E073DC02A}
+		{D90877A3-BC01-41AE-80BA-2BE4A184DDDD} = {4137427C-0AEC-4188-8A68-B12E073DC02A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2659E57-1B6A-4335-AC2E-8BC9855FFD59}
