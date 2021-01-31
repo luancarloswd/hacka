@@ -16,7 +16,7 @@ namespace Hacka.Api.Controllers
     {
         private readonly ILogger<ZabbixController> _logger;
         private readonly IConfiguration _configuration;
-        private const string TEAMS_HOOK_URL = "https://localhost:5001/Zabbix/inAnalysis";
+        private const string TEAMS_HOOK_URL = "https://hackaapi20210130155201.azurewebsites.net/Zabbix/inAnalysis";
 
         private readonly HttpClient _httpClient;
 
