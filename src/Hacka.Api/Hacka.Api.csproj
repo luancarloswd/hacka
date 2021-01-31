@@ -16,7 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Hacka.Domain\Hacka.Domain.csproj" />
     <ProjectReference Include="..\Hacka.Infra\Hacka.Infra.csproj" />
-    <ProjectReference Include="..\Hacka.Zabbix\Hacka.Zabbix.csproj" />
   </ItemGroup>
 
 </Project>
