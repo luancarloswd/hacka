@@ -16,6 +16,7 @@ namespace Hacka.Api.Controllers
     {
         private readonly ILogger<ZabbixController> _logger;
         private readonly IConfiguration _configuration;
+        private const string TEAMS_HOOK_URL = "https://localhost:5001/Zabbix/inAnalysis";
 
         private readonly HttpClient _httpClient;
 
@@ -72,9 +73,9 @@ namespace Hacka.Api.Controllers
         }
 
         [HttpPost("inAnalysis")]
-        public IActionResult PostInAnalysisTeams()
+        public IActionResult PostInAnalysisTeams([FromBody] EventTeamsParams param)
         {
-            InAnalysisTeams("Order", "Hacka", "High");
+            InAnalysisTeams(param.problemName, param.host, param.severity);
 
             return Ok();
         }
@@ -129,10 +130,14 @@ namespace Hacka.Api.Controllers
                              }}]
                     }}],
                     'actions': [{{
-                                '@type': 'HttpPOST',
+                        '@type': 'HttpPOST',
                         'name': 'Save',
-                        'target': 'https://yammer.com/comment?postId=123',
-                        'body': 'comment={{{{list.value}}}}'
+                        'target': '{TEAMS_HOOK_URL}',
+                        'headers': [{{
+                            'name': 'content-type',
+                            'value': 'application/json'
+                        }}],
+                        'body': '{{\'value\':0,\'problemName\':\'{problemName}\',\'host\':\'{host}\',\'severity\':\'{severity}\'}}'
                     }}]
                 }}, 
                 {{
@@ -143,11 +148,6 @@ namespace Hacka.Api.Controllers
                   ]
                 }}]}}".Replace("'", "\"");
 
-            //var aeess = await "https://xpcorretora.webhook.office.com/webhookb2/9e74fc8a-77ec-4c42-9c8c-2590bcf0492f@cf56e405-d2b0-4266-b210-aa04636b6161/IncomingWebhook/67721fccac1743c49ca54452f68d33b0/d9be2d45-f7de-458f-9fa7-f346a435d072"
-            //                    .PostJsonAsync(json)
-            //                        .ReceiveJson<int>()
-            //                        .ConfigureAwait(false);
-
             await _httpClient.PostAsync("https://xpcorretora.webhook.office.com/webhookb2/9e74fc8a-77ec-4c42-9c8c-2590bcf0492f@cf56e405-d2b0-4266-b210-aa04636b6161/IncomingWebhook/67721fccac1743c49ca54452f68d33b0/d9be2d45-f7de-458f-9fa7-f346a435d072", new StringContent(json, Encoding.UTF8, "application/json"));
 
         }
@@ -155,37 +155,37 @@ namespace Hacka.Api.Controllers
 
         private async void InAnalysisTeams(string problemName, string host, string severity)
         {
-            var json = @"{
+            var json = $@"{{
                 '@type': 'MessageCard',
                 '@context': 'http://schema.org/extensions',
                 'themeColor': 'ffff00',
                 'summary': 'IN ANALYSIS',
-                'sections': [{
+                'sections': [{{
                     'activityTitle': 'IN ANALYSIS',
-                    'facts': [{
+                    'facts': [{{
                         'name': 'Problem started:',
                         'value': '10:51:58 on 2021.01.30'
-                    }, {
+                    }}, {{
                         'name': 'Problem name:',
-                        'value': 'URL http://sak-front.xpi.com.br:21607/api/v1/monitor/checkUpdatedCounterparty is not available'
-                    }, {
+                        'value': '{problemName}'
+                    }}, {{
                         'name': 'Host:',
-                        'value': 'APISAK-FRONT21607_CheckUpdatedCounterparty'
-                    }, {
+                        'value': '{host}'
+                    }}, {{
                         'name': 'Severity:',
-                        'value': 'P4 - Warning'
-                    }],
+                        'value': '{severity}'
+                    }}],
                     'markdown': true
-                }],
+                }}],
                 'potentialAction': [
-                {
+                {{
                   '@type': 'OpenUri',
                   'name': 'Vizualizar alerta',
                   'targets': [
-                    { 'os': 'default', 'uri': 'https://docs.microsoft.com/outlook/actionable-messages' }
+                    {{ 'os': 'default', 'uri': 'https://docs.microsoft.com/outlook/actionable-messages' }}
                   ]
-                }]
-            }".Replace("'", "\"");
+                }}]
+            }}".Replace("'", "\"");
 
             await _httpClient.PostAsync("https://xpcorretora.webhook.office.com/webhookb2/9e74fc8a-77ec-4c42-9c8c-2590bcf0492f@cf56e405-d2b0-4266-b210-aa04636b6161/IncomingWebhook/67721fccac1743c49ca54452f68d33b0/d9be2d45-f7de-458f-9fa7-f346a435d072", new StringContent(json, Encoding.UTF8, "application/json"));
 
@@ -193,37 +193,37 @@ namespace Hacka.Api.Controllers
 
         private async void ResolvedTeams(string problemName, string host, string severity)
         {
-            var json = @"{
+            var json = $@"{{
                 '@type': 'MessageCard',
                 '@context': 'http://schema.org/extensions',
                 'themeColor': '008000',
                 'summary': 'RESOLVED',
-                'sections': [{
+                'sections': [{{
                     'activityTitle': 'RESOLVED',
-                    'facts': [{
+                    'facts': [{{
                         'name': 'Problem started:',
                         'value': '10:51:58 on 2021.01.30'
-                    }, {
+                    }}, {{
                         'name': 'Problem name:',
-                        'value': 'URL http://sak-front.xpi.com.br:21607/api/v1/monitor/checkUpdatedCounterparty is not available'
-                    }, {
+                        'value': '{problemName}'
+                    }}, {{
                         'name': 'Host:',
-                        'value': 'APISAK-FRONT21607_CheckUpdatedCounterparty'
-                    }, {
+                        'value': '{host}'
+                    }}, {{
                         'name': 'Severity:',
-                        'value': 'P4 - Warning'
-                    }],
+                        'value': '{severity}'
+                    }}],
                     'markdown': true
-                }],
+                }}],
                 'potentialAction': [
-                {
+                {{
                   '@type': 'OpenUri',
                   'name': 'Vizualizar alerta',
                   'targets': [
-                    { 'os': 'default', 'uri': 'https://docs.microsoft.com/outlook/actionable-messages' }
+                    {{ 'os': 'default', 'uri': 'https://docs.microsoft.com/outlook/actionable-messages' }}
                   ]
-                }]
-            }".Replace("'", "\"");
+                }}]
+            }}".Replace("'", "\"");
 
             await _httpClient.PostAsync("https://xpcorretora.webhook.office.com/webhookb2/9e74fc8a-77ec-4c42-9c8c-2590bcf0492f@cf56e405-d2b0-4266-b210-aa04636b6161/IncomingWebhook/67721fccac1743c49ca54452f68d33b0/d9be2d45-f7de-458f-9fa7-f346a435d072", new StringContent(json, Encoding.UTF8, "application/json"));
 
