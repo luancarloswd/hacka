@@ -111,7 +111,7 @@ namespace Hacka.Infra
                     'activityTitle': 'IN ANALYSIS',
                     'facts': [{{
                         'name': 'Problem started:',
-                        'value': '10:51:58 on 2021.01.30'
+                        'value': '{eventZabbix.EventTime} on {eventZabbix.EventDate}'
                     }}, {{
                         'name': 'Problem name:',
                         'value': '{eventZabbix.AlertSubject}'
