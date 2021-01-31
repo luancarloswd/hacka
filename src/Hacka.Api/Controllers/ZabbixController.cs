@@ -58,7 +58,11 @@ namespace Hacka.Api.Controllers
         public async Task<IActionResult> Post([FromBody] EventZabbixParams data)
         {
             _data.Add(data);
-            await SendProblemTeams(data.AlertSubject, data.HostName, data.EventSeverity);
+            if (data.IsAcknowledged)
+            {
+                await SendProblemTeams(data);
+            }
+
             return Ok(data);
         }
 
@@ -66,7 +70,7 @@ namespace Hacka.Api.Controllers
         [HttpPost("sendProblem")]
         public IActionResult PostProblem()
         {
-            SendProblemTeams("Order", "Hacka", "High");
+            SendProblemTeams(new EventZabbixParams());
 
             return Ok();
         }
@@ -87,7 +91,7 @@ namespace Hacka.Api.Controllers
             return Ok();
         }
 
-        private async Task SendProblemTeams(string problemName, string host, string severity)
+        private async Task SendProblemTeams(EventZabbixParams eventZabbix)
         {
             var json = $@"{{
                 '@type': 'MessageCard',
@@ -98,16 +102,16 @@ namespace Hacka.Api.Controllers
                             'activityTitle': 'PROBLEM',
                     'facts': [{{
                                 'name': 'Problem started:',
-                        'value': '10:51:58 on 2021.01.30'
+                        'value': '{eventZabbix.EventTime} on {eventZabbix.EventDate}'
                     }}, {{
                                 'name': 'Problem name:',
-                        'value': '{problemName}'
+                        'value': '{eventZabbix.AlertSubject}'
                          }}, {{
                                 'name': 'Host:',
-                        'value': '{host}'
+                        'value': '{eventZabbix.HostName}'
                          }}, {{
                                 'name': 'Severity:',
-                        'value': '{severity}'
+                        'value': '{eventZabbix.EventSeverity}'
                          }}],
                     'markdown': true
                 }}],
