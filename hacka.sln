@@ -18,6 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hacka.Infra", "src\Hacka.In
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{107FC32A-833A-4465-A19E-7C7EB13E60B1}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\main_hackaapi20210130155201.yml = .github\workflows\main_hackaapi20210130155201.yml
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
