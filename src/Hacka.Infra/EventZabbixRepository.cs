@@ -1,7 +1,10 @@
-﻿using Hacka.Domain;
+﻿using System;
+using Hacka.Domain;
 using Hacka.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Hacka.Infra
@@ -13,6 +16,11 @@ namespace Hacka.Infra
         public EventZabbixRepository(HackaContext context) => _context = context;
 
         public async Task<IEnumerable<EventZabbixParams>> GetAllAsync() => await _context.EventZabbix.ToListAsync();
+        public async Task<IEnumerable<EventZabbixParams>> GetAllAsync(Expression<Func<EventZabbixParams, bool>> expression)
+        {
+            return await _context.EventZabbix.Where(expression).ToListAsync();
+        }
+
         public async Task<EventZabbixParams> AddAsync(EventZabbixParams eventZabbix)
         {
             await _context.EventZabbix.AddAsync(eventZabbix);
