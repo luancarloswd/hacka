@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4137427C-0AEC-4188-8A68-B12E073DC02A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hacka.Api", "src\Hacka.Api\Hacka.Api.csproj", "{7C773CE6-17EF-47F5-B1AD-AE711FA5E4D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hacka.Api", "src\Hacka.Api\Hacka.Api.csproj", "{7C773CE6-17EF-47F5-B1AD-AE711FA5E4D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hacka.Zabbix", "src\Hacka.Zabbix\Hacka.Zabbix.csproj", "{466300A2-185B-42B5-9B03-E25961C9900F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hacka.Zabbix", "src\Hacka.Zabbix\Hacka.Zabbix.csproj", "{466300A2-185B-42B5-9B03-E25961C9900F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hacka.Domain", "src\Hacka.Domain\Hacka.Domain.csproj", "{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,9 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7C773CE6-17EF-47F5-B1AD-AE711FA5E4D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -46,9 +45,28 @@ Global
 		{466300A2-185B-42B5-9B03-E25961C9900F}.Release|x64.Build.0 = Release|Any CPU
 		{466300A2-185B-42B5-9B03-E25961C9900F}.Release|x86.ActiveCfg = Release|Any CPU
 		{466300A2-185B-42B5-9B03-E25961C9900F}.Release|x86.Build.0 = Release|Any CPU
+		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Debug|x64.Build.0 = Debug|Any CPU
+		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Debug|x86.Build.0 = Debug|Any CPU
+		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Release|x64.ActiveCfg = Release|Any CPU
+		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Release|x64.Build.0 = Release|Any CPU
+		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Release|x86.ActiveCfg = Release|Any CPU
+		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7C773CE6-17EF-47F5-B1AD-AE711FA5E4D5} = {4137427C-0AEC-4188-8A68-B12E073DC02A}
 		{466300A2-185B-42B5-9B03-E25961C9900F} = {4137427C-0AEC-4188-8A68-B12E073DC02A}
+		{C2CD5D00-5FD2-4779-A71F-1D6A3F03C0B9} = {4137427C-0AEC-4188-8A68-B12E073DC02A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D2659E57-1B6A-4335-AC2E-8BC9855FFD59}
 	EndGlobalSection
 EndGlobal
