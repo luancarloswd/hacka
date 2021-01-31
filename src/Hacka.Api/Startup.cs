@@ -21,17 +21,18 @@ namespace Hacka.Api
             Configuration = configuration;
         }
 
-        private readonly IServiceProvider _serviceProvider;
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<HackaContext>(opt => opt.UseInMemoryDatabase("HackaDb"));
+            services.AddDbContext<HackaContext>(opt => opt.UseInMemoryDatabase("HackaDb"), ServiceLifetime.Singleton);
             services.AddControllers();
-            services.AddSingleton(new List<EventZabbixParams>());
-            services.AddScoped<IEventZabbixRepository, EventZabbixRepository>();
-            services.AddScoped<ISquadRepository, SquadRepository>();
+
+            services.AddSingleton<IEventZabbixRepository, EventZabbixRepository>();
+            services.AddSingleton<ISquadRepository, SquadRepository>();
+            services.AddSingleton<IZabbixRepository, ZabbixRepository>();
+            services.AddSingleton<IMsTeamsRepository, MsTeamsRepository>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hacka.Api", Version = "v1" });
